@@ -1,8 +1,151 @@
 :root {
   color-scheme: light dark;
   font: 16px/145% system-ui, 'Segoe UI', Roboto, sans-serif;
+
+  --bg-page: #1a1a2e;
+  --card-bg: #ffffff;
+  --text-dark: #1a1a2e;
+  --text-muted: #5a5a6e;
+  --text-light: #f0f0f5;
+  --radius-card: 20px;
+  --space: 8px;
+}
+
+* {
+  box-sizing: border-box;
 }
 
 body {
   margin: 0;
+  min-height: 100vh;
+  background: var(--bg-page);
+  color: var(--text-light);
+}
+
+#app {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: calc(var(--space) * 5) calc(var(--space) * 2);
+}
+
+/* ---------- Área de busca (fora do card, sobre fundo escuro) ---------- */
+
+.search-area {
+  margin-bottom: calc(var(--space) * 4);
+}
+
+.search-form {
+  display: flex;
+  gap: var(--space);
+  justify-content: center;
+}
+
+.search-input {
+  flex: 1;
+  max-width: 480px;
+  padding: calc(var(--space) * 1.5) calc(var(--space) * 2);
+  font: inherit;
+  color: var(--text-light);
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: calc(var(--space) * 1.5);
+}
+
+.search-input::placeholder {
+  color: rgba(240, 240, 245, 0.6);
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: rgba(255, 255, 255, 0.55);
+}
+
+.search-button {
+  padding: calc(var(--space) * 1.5) calc(var(--space) * 3);
+  font: inherit;
+  font-weight: 600;
+  color: var(--text-dark);
+  background: var(--text-light);
+  border: none;
+  border-radius: calc(var(--space) * 1.5);
+  cursor: pointer;
+}
+
+.search-button:hover {
+  background: #ffffff;
+}
+
+/* ---------- Card principal (branco, arredondado) ---------- */
+
+.card {
+  display: flex;
+  gap: calc(var(--space) * 4);
+  max-width: 800px;
+  margin: 0 auto;
+  padding: calc(var(--space) * 4);
+  background: var(--card-bg);
+  color: var(--text-dark);
+  border-radius: var(--radius-card);
+}
+
+/* ---------- Sidebar (esquerda) ---------- */
+
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--space) * 1.5);
+  flex: 0 0 40%;
+}
+
+.sidebar__temperature {
+  font-size: 3.5rem;
+  font-weight: 700;
+  line-height: 1.1;
+}
+
+.sidebar__location {
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.sidebar__date,
+.sidebar__condition {
+  color: var(--text-muted);
+}
+
+.sidebar__day-night {
+  display: flex;
+  align-items: center;
+  gap: var(--space);
+  font-weight: 600;
+}
+
+/* ---------- Área principal (direita) ---------- */
+
+.main-area {
+  flex: 1;
+}
+
+.metrics {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: calc(var(--space) * 2);
+}
+
+.metric {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--space) * 0.5);
+  padding: calc(var(--space) * 2);
+  background: #f4f4f8;
+  border-radius: calc(var(--space) * 1.5);
+}
+
+.metric__label {
+  font-size: 0.875rem;
+  color: var(--text-muted);
+}
+
+.metric__value {
+  font-weight: 600;
 }
