@@ -1,6 +1,10 @@
 import './style.css'
 import { searchWeather } from './services/openMeteo.ts'
+import { getWeatherDescription } from './utils/weatherCode.ts'
+import { getCardinalDirection } from './utils/windDirection.ts'
 import type { CombinedWeatherData } from './types/weather.ts'
+import sunIcon from './assets/sun.svg'
+import moonIcon from './assets/moon.svg'
 
 document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
   <header class="search-area">
@@ -76,8 +80,53 @@ function setState(state: UiState): void {
   button.disabled = isLoading
 }
 
-function renderResult(_data: CombinedWeatherData): void {
-  // O preenchimento da sidebar e da área principal é feito na Fase 5.
+function formatDate(timezone: string): string {
+  return new Intl.DateTimeFormat('pt-BR', {
+    weekday: 'long',
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric',
+    timeZone: timezone,
+  }).format(new Date())
+}
+
+function el(id: string): HTMLElement {
+  return document.getElementById(id)!
+}
+
+function renderResult(data: CombinedWeatherData): void {
+  const { name, country_code, timezone, current, current_units } = data
+
+  // --- Sidebar ---
+  el('temperature').textContent =
+    `${current.temperature_2m}${current_units.temperature_2m}`
+
+  el('location').textContent = `${name}, ${country_code}`
+
+  el('date').textContent = formatDate(timezone)
+
+  const isDay = current.is_day === 1
+  el('day-night').innerHTML = `
+    <img class="day-night__icon" src="${isDay ? sunIcon : moonIcon}" alt="" width="24" height="24" />
+    <span>${isDay ? 'Dia' : 'Noite'}</span>
+  `
+
+  el('condition').textContent = getWeatherDescription(current.weather_code)
+
+  // --- Área principal ---
+  el('humidity').textContent =
+    `${current.relative_humidity_2m}${current_units.relative_humidity_2m}`
+
+  el('apparent-temperature').textContent =
+    `${current.apparent_temperature}${current_units.apparent_temperature}`
+
+  el('precipitation').textContent =
+    `${current.precipitation_probability}${current_units.precipitation_probability}`
+
+  const cardinal = getCardinalDirection(current.wind_direction_10m)
+  el('wind').textContent =
+    `${current.wind_speed_10m} ${current_units.wind_speed_10m} · ${current.wind_direction_10m}${current_units.wind_direction_10m} (${cardinal})`
+
   setState('result')
 }
 

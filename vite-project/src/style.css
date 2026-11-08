@@ -191,6 +191,10 @@ body {
   font-weight: 600;
 }
 
+.day-night__icon {
+  display: block;
+}
+
 /* ---------- Área principal (direita) ---------- */
 
 .main-area {
@@ -219,4 +223,21 @@ body {
 
 .metric__value {
   font-weight: 600;
+}
+
+/* ---------- Responsividade (mobile: sidebar empilha acima) ---------- */
+
+@media (max-width: 768px) {
+  .card[data-state='result'] .result {
+    flex-direction: column;
+    gap: calc(var(--space) * 3);
+  }
+
+  .sidebar {
+    flex-basis: auto;
+  }
+
+  .search-form {
+    flex-wrap: wrap;
+  }
 }
